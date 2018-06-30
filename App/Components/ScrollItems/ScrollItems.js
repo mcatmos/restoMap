@@ -1,33 +1,45 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import {
   ScrollView,
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Animated
 } from 'react-native'
 import Card from '../Card/Card'
 
 class ScrollItems extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      animatedValue: new Animated.Value(0)
+    }
+  }
+
+  componentDidUpdate() {
+    Animated.timing(this.state.animatedValue, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true
+    }).start();
+  }
+  
   render() {
-    const { markers } = this.props
-    return(
-      <ScrollView
-        horizontal
+    const { items, onPress } = this.props
+    return (
+      <Animated.ScrollView 
+        horizontal 
+        style={{ opacity: this.state.animatedValue }}
       >
-      {markers.length && markers.map((value, index) => {
-        return <Card {...value } />
-      })}
-        
-      </ScrollView>
+        {items.map((item, index) => {
+          return (
+            <Card key={index} {...item} onPress={onPress} />
+          )
+        })}
+      </Animated.ScrollView>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    markers: state.markers
-  }
-}
-
-export default connect(mapStateToProps, null)(ScrollItems)
+export default ScrollItems

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import MapView, { Marker, Callout } from 'react-native-maps'
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import MyCustomCalloutView from './Components/CalloutView'
 import Form from '../Form/Form'
 import { addMarker } from '../../Domain/Actions/MarkerActions'
+import MapStyle from './Utils/MapStyle'
 
 const { width, height } = Dimensions.get('window')
 const LATITUDE_DELTA = 0.01;
@@ -67,14 +68,6 @@ class Map extends Component {
     }
   }
 
-  onRegionChange = (region) => {
-    console.log('onRegionChange', region);
-  };
-
-  onRegionChangeComplete = (region) => {
-    console.log('onRegionChangeComplete', region);
-  };
-
   showForm = (e) => {
     this.setState({ showForm: true })
   }
@@ -88,6 +81,7 @@ class Map extends Component {
       <View style={styles.container}>
          {this.state.showForm && <Form />}
         <MapView
+          provider={ PROVIDER_GOOGLE }
           ref={ map => { this.map = map }}
           style={styles.map}
           onMapReady={this.onMapReady}
@@ -95,14 +89,19 @@ class Map extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           showsUserLocation
           showsMyLocationButton
+          customMapStyle={MapStyle}
           onLongPress={this.showForm}
           onPress={this.hideForm}
           initialRegion={initialRegion}
         >
        
         {this.props.markers.length && this.props.markers.map((item, index) => {
+          const location = {
+            latitude: item.geometry.location.lat,
+            longitude: item.geometry.location.lng
+          }
           return (
-            <Marker key={index} coordinate={item}>
+            <Marker key={index} coordinate={location}>
               <Callout>
                 <MyCustomCalloutView />
               </Callout>
@@ -111,7 +110,6 @@ class Map extends Component {
         })}
          
         </MapView>
-        {this.state.showForm && <Form />}
       </View>
     )
   }
