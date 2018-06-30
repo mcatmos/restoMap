@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import MapView, { Marker, Callout } from 'react-native-maps'
 import MyCustomCalloutView from './Components/CalloutView'
+import Form from '../Form/Form'
+import { addMarker } from '../../Domain/Actions/MarkerActions'
 
 const { width, height } = Dimensions.get('window')
 const LATITUDE_DELTA = 0.01;
@@ -17,7 +20,8 @@ class Map extends Component {
   
   state ={
     ready: false,
-    region: null
+    region: null,
+    showForm: false
   }
 
   map = null
@@ -71,14 +75,18 @@ class Map extends Component {
     console.log('onRegionChangeComplete', region);
   };
 
-  addMarker = (e) => {
-    console.log(e.nativeEvent)
+  showForm = (e) => {
+    this.setState({ showForm: true })
+  }
+
+  hideForm = () => {
+    this.setState({ showForm: false })
   }
   
   render() {
-    console.log(this.state)
     return (
       <View style={styles.container}>
+         {this.state.showForm && <Form />}
         <MapView
           ref={ map => { this.map = map }}
           style={styles.map}
@@ -87,15 +95,23 @@ class Map extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           showsUserLocation
           showsMyLocationButton
-          onPress={this.addMarker}
+          onLongPress={this.showForm}
+          onPress={this.hideForm}
           initialRegion={initialRegion}
         >
-          <Marker coordinate={this.state.region}>
-            <Callout>
-              <MyCustomCalloutView />
-            </Callout>
-          </Marker>
+       
+        {this.props.markers.length && this.props.markers.map((item, index) => {
+          return (
+            <Marker key={index} coordinate={item}>
+              <Callout>
+                <MyCustomCalloutView />
+              </Callout>
+            </Marker>
+          )
+        })}
+         
         </MapView>
+        {this.state.showForm && <Form />}
       </View>
     )
   }
@@ -112,4 +128,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Map
+const mapStateToProps = (state) => {
+  return {
+    markers: state.markers
+  }
+}
+
+export default connect(mapStateToProps, {
+  addMarker
+})(Map)

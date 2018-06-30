@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   ScrollView,
   View,
   Text,
   StyleSheet
 } from 'react-native'
+import Card from '../Card/Card'
 
-const ScrollItems = () => {
-  return(
-    <ScrollView
-      horizontal
-    >
-      <View><Text>Resto 1</Text></View>
-      <View><Text>Resto 2</Text></View>
-      <View><Text>Resto 3</Text></View>
-    </ScrollView>
-  )
+class ScrollItems extends Component {
+  render() {
+    const { markers } = this.props
+    return(
+      <ScrollView
+        horizontal
+      >
+      {markers.length && markers.map((value, index) => {
+        return <Card {...value } />
+      })}
+        
+      </ScrollView>
+    )
+  }
 }
 
-export default ScrollItems
+const mapStateToProps = (state) => {
+  return {
+    markers: state.markers
+  }
+}
+
+export default connect(mapStateToProps, null)(ScrollItems)
