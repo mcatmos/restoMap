@@ -7,10 +7,15 @@ const createAPI = () => {
     baseURL: 'https://maps.googleapis.com/maps/api/'
   })
 
-  const searchPlace = (query) => {
-    //add search by user location
+  const searchPlace = (params) => {
+    const { query } = params
+    const location = {
+      latitude: params.location.latitude,
+      longitude: params.location.longitude
+    }
     const parameters = {
-      query,
+      location: `${location.latitude},${location.longitude}`,
+      radius: 100,
       key,
       input: query,
       inputtype: 'textquery',
@@ -19,8 +24,26 @@ const createAPI = () => {
     return api.get('place/findplacefromtext/json', parameters)
   }
 
+  const autocompletePlace = (params) => {
+    const { query } = params
+    const location = {
+      latitude: params.location.latitude,
+      longitude: params.location.longitude
+    }
+    const parameters = {
+      location: `${location.latitude},${location.longitude}`,
+      radius: 100,
+      key,
+      input: query,
+      inputtype: 'textquery',
+      fields: 'photos,formatted_address,name,rating,opening_hours,geometry'
+    }
+    return api.get('place/autocomplete/json', parameters)
+  }
+
   return {
-    searchPlace
+    searchPlace,
+    autocompletePlace
   }
 }
 

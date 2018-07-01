@@ -6,42 +6,74 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
-import { requestSearch } from '../../../../Domain/Actions/SearchActions'
+import { 
+  requestSearch, 
+  requestAutocompleteSearch, 
+  resetAutocompleteSearch 
+} from '../../../../Domain/Actions/SearchActions'
 import { showResultCards } from '../../../../Domain/Actions/UIActions'
-
+import { getCurrentLocation } from '../../../../Domain/Selectors/Location'
+import { getAutocompleteResults } from '../../../../Domain/Selectors/Search'
+import PredictiveList from './PredictiveList/PredictiveList'
+ 
 class SearchBox extends Component {
   state = {
     query: ''
   }
 
   handleOnSearch = () => {
-    const { requestSearch } = this.props
+    const { requestSearch, location } = this.props
     const { query } = this.state
-    requestSearch(query)
+    requestSearch(query, location)
     this.setState({ query: '' })
   }
 
+  handleOnChangeText = ({ text }) => {
+    const { 
+      requestAutocompleteSearch, 
+      location, 
+      resetAutocompleteSearch 
+    } = this.props
+    const { query } = this.state
+    this.setState({ query: text })
+
+    if (query.length > 4) {
+      requestAutocompleteSearch(query, location)
+    }
+
+    if (query.length === 1 || query.length === 0) {
+      resetAutocompleteSearch()
+    }
+  }
+
   render() {
-    const { showResultCards } = this.props
+    const { showResultCards, autocompleteResults, isFetching } = this.props
+    const searchIcon = isFetching ? 
+      <ActivityIndicator size="small" style={[styles.icon, {paddingRight: 20}]}/> 
+      : <Icon name={'search'} size={30} style={styles.icon} /> 
     return (
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <Icon name={'search'} size={30} style={styles.icon}/>
-          <TextInput
-            style={styles.textInput}
-            value={this.state.query}
-            placeholder={'Search by name'}
-            onBlur={Keyboard.dismiss}
-            onSubmitEditing={this.handleOnSearch}
-            onChangeText={(text) => this.setState({ query: text })}
-          />
+      <View style={styles.fullContainer}>
+        <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            {searchIcon}
+            <TextInput
+              style={styles.textInput}
+              value={this.state.query}
+              placeholder={'Search by name'}
+              onBlur={Keyboard.dismiss}
+              onSubmitEditing={this.handleOnSearch}
+              onChangeText={(text) => this.handleOnChangeText({ text })}
+            />
+          </View>
+          <TouchableOpacity onPress={showResultCards}>
+            <Icon name={'list'} size={30} style={styles.icon} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={showResultCards}>
-          <Icon name={'list'} size={30} style={styles.icon} />
-        </TouchableOpacity>
+        {autocompleteResults && <PredictiveList results={autocompleteResults} />}
       </View>
     )
   }
@@ -49,7 +81,9 @@ class SearchBox extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    state
+    location: getCurrentLocation(state),
+    isFetching: state.search.fetching,
+    autocompleteResults: getAutocompleteResults(state)
   }
 }
 
@@ -85,5 +119,7 @@ const styles = StyleSheet.create({
 
 export default connect(mapStateToProps, {
   requestSearch,
-  showResultCards
+  requestAutocompleteSearch,
+  showResultCards,
+  resetAutocompleteSearch
 })(SearchBox)

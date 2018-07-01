@@ -6,6 +6,7 @@ import MyCustomCalloutView from './Components/CalloutView'
 import Form from '../Form/Form'
 import { addMarker } from '../../Domain/Actions/MarkerActions'
 import MapStyle from './Utils/MapStyle'
+import { getCurrentLocation } from '../../Domain/Selectors/Location'
 
 const { width, height } = Dimensions.get('window')
 const LATITUDE_DELTA = 0.01;
@@ -27,39 +28,22 @@ class Map extends Component {
 
   map = null
 
-  componentDidMount() {
-    this.getCurrentPosition()
-  }
-
   componentDidUpdate(prevProps, prevState) {
-    const { ready, region } = this.state
+    const { ready } = this.state
+    const { location } = this.props
     
+    const region = {
+      latitude: location.latitude,
+      longitude: location.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    }
+
     if (prevState.ready !== ready) {
       if (ready) {
         setTimeout(() => this.map.animateToRegion(region), 100);
       }
     }
-  }
-
-  getCurrentPosition() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-
-        const { 
-          coords: { 
-            latitude, 
-            longitude 
-          }
-        } = position
-
-        const region = {
-          latitude,
-          longitude,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }
-      this.setState({ region })
-    })
   }
 
   onMapReady = (e) => {
@@ -128,7 +112,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    markers: state.markers
+    markers: state.markers,
+    location: getCurrentLocation(state)
   }
 }
 

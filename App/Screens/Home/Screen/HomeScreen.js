@@ -9,6 +9,7 @@ import Map from '../../../Components/Map/Map'
 import ScrollItems from '../../../Components/ScrollItems/ScrollItems'
 import SearchBox from '../Components/SearchBox/SearchBox'
 import { addMarker } from '../../../Domain/Actions/MarkerActions'
+import { getSearchResults } from '../../../Domain/Selectors/Search'
 import { hideResultCards } from '../../../Domain/Actions/UIActions/'
 
 class HomeScreen extends Component {
@@ -19,6 +20,7 @@ class HomeScreen extends Component {
 
   render() {
     const { showResults, results } = this.props
+    console.log(showResults)
     return (
       <View style={styles.container}>       
         <Map />
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     showResults: state.ui.showResultCards,
-    results: state.search.results
+    results: getSearchResults(state)
   }
 }
 
