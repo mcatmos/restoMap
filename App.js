@@ -13,6 +13,7 @@ import CreateStore from './App/Domain/Store/Store'
 import Reducers from './App/Domain/Reducers/index'
 import LoadingScreen from './App/Screens/Login/Screen/LoaderScreen'
 import * as NavigationService from './App/Navigation/NavigationService'
+import DevMenu from './App/DevTools/DevMenu'
 
 export default class App extends Component {
   constructor(props) {
@@ -20,16 +21,15 @@ export default class App extends Component {
     this.store = CreateStore(Reducers)
   }
 
-  componentDidMount() {
-    NavigationService.setNavigator(this.navigator)
-  }
-
   render() {
     return (
       <Provider store={this.store.store}>
         <PersistGate loading={LoadingScreen} persistor={this.store.persistor}>
-          <RootStack ref={nav => { this.navigator = nav }}/>
-        </PersistGate>
+          <RootStack 
+            ref={navigatorRef => { NavigationService.setTopLevelNavigator(navigatorRef); }}
+          />
+          <DevMenu />
+        </PersistGate>   
       </Provider>
     )
   }

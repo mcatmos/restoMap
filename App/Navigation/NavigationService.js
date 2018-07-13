@@ -2,17 +2,19 @@ import { NavigationActions } from 'react-navigation';
 
 const config = {};
 
-export function setNavigator(nav) {
-  if (nav) {
-    config.navigator = nav;
-  }
+let _navigator;
+
+export function setTopLevelNavigator(navigatorRef) {
+  _navigator = navigatorRef;
 }
 
 export function navigate(routeName, params) {
-  if (config.navigator && routeName) {
-    let action = NavigationActions.navigate({ routeName, params });
-    config.navigator.dispatch(action);
-  }
+  _navigator.dispatch(
+    NavigationActions.navigate({
+      routeName,
+      params,
+    })
+  )
 }
 
 export function goBack() {

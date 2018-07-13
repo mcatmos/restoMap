@@ -36,6 +36,7 @@ class LoginScreen extends Component {
           style={styles.inputBox}
           placeholder='Type your Password'
           placeholderTextColor='grey'
+          secureTextEntry
           value={this.state.password}
           onChangeText={(text) => { this.setState({ password: text}) }}
         />
