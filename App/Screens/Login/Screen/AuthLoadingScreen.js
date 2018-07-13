@@ -11,12 +11,9 @@ import { appIsReady } from '../../../Domain/Actions/UIActions';
 
 class AuthLoadingScreen extends Component {
   
-  static getDerivedStateFromProps(props){
-    console.log(props)
-    const { isLogged, ui } = props
-    if (ui) {
-       this.props.navigation.navigate(isLogged ? 'App' : 'Auth')
-    }
+   componentDidMount(){
+    const { isLogged } = this.props
+    this.props.navigation.navigate(isLogged ? 'App' : 'Auth')
   }
 
   render() {
@@ -37,14 +34,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  if (state.ui) {
-    if (state.ui.appIsReady) {
-      return {
-        isLogged: state.login.loginSuccessful
-      }
-    }
+  return {
+    isLogged: state.login.loginSuccessful
   }
-  return state
 }
 
 export default connect(mapStateToProps)(withNavigation(AuthLoadingScreen))

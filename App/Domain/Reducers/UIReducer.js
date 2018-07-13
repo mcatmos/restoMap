@@ -1,21 +1,14 @@
 import { 
   SHOW_RESULT_CARDS, 
-  HIDE_RESULT_CARDS, 
-  APP_IS_READY
+  HIDE_RESULT_CARDS
 } from '../Actions/UIActions'
 
 const INITIAL_STATE = {
-  showResultCards: false,
-  appIsReady: false
+  showResultCards: false
 }
 
 export default UIReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
-    case APP_IS_READY: 
-      return {
-        ...state,
-        appIsReady: true
-      }
     case SHOW_RESULT_CARDS:
       return {
         ...state,

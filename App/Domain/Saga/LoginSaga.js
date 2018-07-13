@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from 'redux-saga/effects'
 import { REQUEST_LOGIN, requestLoginSuccess } from '../Actions/LoginActions'
 import { signInAndRetrieveDataWithEmailAndPassword } from '../../Screens/Login/Utils/'
-import { NavigationActions } from 'react-navigation';
+import * as NavigationService from '../../Navigation/NavigationService'
 
 
 function* requestLogin(action) {
@@ -9,7 +9,7 @@ function* requestLogin(action) {
   try {
     const response = yield call(signInAndRetrieveDataWithEmailAndPassword, mail, password)
     yield put(requestLoginSuccess(response._user))
-    yield put(NavigationActions.navigate({ routeName: 'Home' }));
+    yield call(NavigationService.navigate, 'home');
   }
   catch (err){
     console.log(err)
