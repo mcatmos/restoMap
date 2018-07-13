@@ -5,6 +5,7 @@ import {
   watchCurrentPosition 
 } from './LocationSaga'
 import SearchSaga from './SearchSaga'
+import LoginSaga from './LoginSaga'
 import API from '../../Utils/API'
 
 const APIService = API.createAPI()
@@ -12,6 +13,7 @@ const APIService = API.createAPI()
 export default function* sagaRoot() {
  yield all([
     SearchSaga(APIService),
+    LoginSaga(),
     spawn(watchLocationChannel),
     spawn(getCurrentPosition),
     spawn(watchCurrentPosition)

@@ -3,6 +3,8 @@ export const REQUEST_SEARCH_SUCCESS = 'REQUEST_SEARCH_SUCCESS'
 export const REQUEST_AUTOCOMPLETE_SEARCH = 'REQUEST_AUTOCOMPLETE_SEARCH'
 export const REQUEST_AUTOCOMPLETE_SEARCH_SUCCESS = 'REQUEST_AUTOCOMPLETE_SEARCH_SUCCESS'
 export const RESET_AUTOCOMPLETE_SEARCH = 'RESET_AUTOCOMPLETE_SEARCH'
+export const REQUEST_SEARCH_DETAILS = 'REQUEST_SEARCH_DETAILS'
+export const REQUEST_SEARCH_DETAILS_SUCCESS = 'REQUEST_SEARCH_DETAILS_SUCCESS'
 
 export const requestSearch = (query, location) => {
   return {
@@ -41,6 +43,20 @@ export const requestAutocompleteSearchSuccess = (response) => {
 export const resetAutocompleteSearch = () => {
   return {
     type: RESET_AUTOCOMPLETE_SEARCH
+  }
+}
+
+export const requestSearchDetails = (placeId) => {
+  return {
+    type: REQUEST_SEARCH_DETAILS,
+    payload: placeId
+  }
+}
+
+export const requestSearchDetailsSuccess = (response) => {
+  return {
+    type: REQUEST_SEARCH_DETAILS_SUCCESS,
+    payload: response
   }
 }
 

@@ -10,15 +10,27 @@ import {
   ActivityIndicator
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
+import { NavigationActions, withNavigation } from 'react-navigation'
 import { 
   requestSearch, 
   requestAutocompleteSearch, 
-  resetAutocompleteSearch 
+  resetAutocompleteSearch,
+  requestSearchDetails 
 } from '../../../../Domain/Actions/SearchActions'
 import { showResultCards } from '../../../../Domain/Actions/UIActions'
 import { getCurrentLocation } from '../../../../Domain/Selectors/Location'
 import { getAutocompleteResults } from '../../../../Domain/Selectors/Search'
 import PredictiveList from './PredictiveList/PredictiveList'
+
+
+
+const navigateAction = NavigationActions.navigate({
+  routeName: 'Detail',
+
+  params: {},
+
+  action: NavigationActions.navigate({ routeName: 'Detail' }),
+})
  
 class SearchBox extends Component {
   state = {
@@ -50,6 +62,12 @@ class SearchBox extends Component {
     }
   }
 
+  handleOnPress = (placeId) => {
+    const { requestSearchDetails } = this.props
+    //requestSearchDetails(placeId)
+    //this.props.navigation.dispatch(navigateAction)
+  }
+
   render() {
     const { showResultCards, autocompleteResults, isFetching } = this.props
     const searchIcon = isFetching ? 
@@ -73,7 +91,7 @@ class SearchBox extends Component {
             <Icon name={'list'} size={30} style={styles.icon} />
           </TouchableOpacity>
         </View>
-        {autocompleteResults && <PredictiveList results={autocompleteResults} />}
+        {autocompleteResults && <PredictiveList results={autocompleteResults} onPress={this.handleOnPress}/>}
       </View>
     )
   }
@@ -121,5 +139,6 @@ export default connect(mapStateToProps, {
   requestSearch,
   requestAutocompleteSearch,
   showResultCards,
-  resetAutocompleteSearch
-})(SearchBox)
+  resetAutocompleteSearch,
+  requestSearchDetails
+})(withNavigation(SearchBox))

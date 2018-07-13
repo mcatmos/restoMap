@@ -3,6 +3,9 @@ package com.restomap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactlibrary.RNGooglePlacePickerPackage;
+import io.invertase.firebase.RNFirebasePackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.reactlibrary.RNGooglePlacePickerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +28,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
+            new RNGooglePlacePickerPackage(),
+            new RNFirebasePackage(),
             new MapsPackage(),
             new RNGooglePlacePickerPackage()
       );

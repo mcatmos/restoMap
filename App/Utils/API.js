@@ -41,9 +41,19 @@ const createAPI = () => {
     return api.get('place/autocomplete/json', parameters)
   }
 
+  const getPlaceDetails = (placeId) => {
+    const parameters = {
+      placeid: placeId,
+      key
+    }
+
+    return api.get('place/details/json', parameters)
+  }
+
   return {
     searchPlace,
-    autocompletePlace
+    autocompletePlace,
+    getPlaceDetails
   }
 }
 

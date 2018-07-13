@@ -5,17 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 @import GoogleMaps; //add this line if you want to use Google Maps
+@import Firebase;
 
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+  [FIRApp configure];
   
   [GMSServices provideAPIKey:@"AIzaSyCE_ewv9xcWSs9bIwN4N2LLaC7C5s_za-E"]; // add this line using the api key obtained from Google Console
 

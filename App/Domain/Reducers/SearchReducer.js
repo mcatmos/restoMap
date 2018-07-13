@@ -3,12 +3,14 @@ import {
   REQUEST_AUTOCOMPLETE_SEARCH_SUCCESS, 
   RESET_AUTOCOMPLETE_SEARCH,
   REQUEST_SEARCH,
-  REQUEST_AUTOCOMPLETE_SEARCH
+  REQUEST_AUTOCOMPLETE_SEARCH,
+  REQUEST_SEARCH_DETAILS_SUCCESS
 } from '../Actions/SearchActions'
 
 const INITIAL_STATE = {
   results: null,
   autocomplete: null,
+  details: null,
   fetching: false
 }
 
@@ -36,6 +38,11 @@ export default SearchReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         autocomplete: null
+      }
+    case REQUEST_SEARCH_DETAILS_SUCCESS:
+      return {
+        ...state,
+        details: action.payload
       }
     default:
      return state

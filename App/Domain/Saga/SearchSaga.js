@@ -7,7 +7,9 @@ import {
   REQUEST_SEARCH,
   REQUEST_AUTOCOMPLETE_SEARCH, 
   requestSearchSuccess,
-  requestAutocompleteSearchSuccess
+  requestAutocompleteSearchSuccess,
+  REQUEST_SEARCH_DETAILS,
+  requestSearchDetailsSuccess
 } from '../Actions/SearchActions'
 import { showResultCards } from '../Actions/UIActions'
 
@@ -37,7 +39,21 @@ function* requestAutocompleteSearch(APIService, action) {
   }
 }
 
+function* requestSearchDetails(APIService, action) {
+  try {
+    const response = yield call(APIService.getPlaceDetails, action.payload)
+    if (response.ok) {
+      const { data } = response
+      yield put(requestSearchDetailsSuccess(data.results))
+      //yield put(showResultCards())
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export default function* searchSaga(APIService) {
   yield takeEvery(REQUEST_AUTOCOMPLETE_SEARCH, requestAutocompleteSearch, APIService),
-  yield takeEvery(REQUEST_SEARCH, requestSearch, APIService)
+  yield takeEvery(REQUEST_SEARCH, requestSearch, APIService),
+  yield takeEvery(REQUEST_SEARCH_DETAILS, requestSearchDetails, APIService)
 }
