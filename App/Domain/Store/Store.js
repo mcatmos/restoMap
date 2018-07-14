@@ -4,12 +4,13 @@ import { persistStore } from 'redux-persist'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import logger from 'redux-logger'
 import SagaRoot from '../Saga/SagaRoot'
-import { appIsReady } from '../Actions/UIActions'
+
+console.ignoredYellowBox = ['Warning']
 
 export default (reducers) => {
   const components = []
   const sagaMiddleware = createSagaMiddleware()
-  
+
   components.push(sagaMiddleware)
   components.push(logger)
   const middleWare = composeWithDevTools(applyMiddleware(...components))

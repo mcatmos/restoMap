@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import Config from 'react-native-config'
 import RootStack from './App/Navigation/NavigationRouter'
 import CreateStore from './App/Domain/Store/Store'
 import Reducers from './App/Domain/Reducers/index'
@@ -28,7 +29,7 @@ export default class App extends Component {
           <RootStack 
             ref={navigatorRef => { NavigationService.setTopLevelNavigator(navigatorRef); }}
           />
-          <DevMenu />
+          {Config.IOS_SCHEME === 'dev' && <DevMenu /> }
         </PersistGate>   
       </Provider>
     )

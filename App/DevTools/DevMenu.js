@@ -12,7 +12,7 @@ class DevMenu extends Component {
       <View>
         {config(dispatch).map(item => {
           return (
-            <TouchableOpacity onPress={item.onPress}>
+            <TouchableOpacity key={item.label} onPress={item.onPress}>
               <Text>{item.label}</Text>
             </TouchableOpacity>
           )

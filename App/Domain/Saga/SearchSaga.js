@@ -44,8 +44,7 @@ function* requestSearchDetails(APIService, action) {
     const response = yield call(APIService.getPlaceDetails, action.payload)
     if (response.ok) {
       const { data } = response
-      yield put(requestSearchDetailsSuccess(data.results))
-      //yield put(showResultCards())
+      yield put(requestSearchDetailsSuccess(data.result))
     }
   } catch (e) {
     console.log(e)

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import MyCustomCalloutView from './Components/CalloutView'
-import Form from '../Form/Form'
 import { addMarker } from '../../Domain/Actions/MarkerActions'
 import MapStyle from './Utils/MapStyle'
 import { getCurrentLocation } from '../../Domain/Selectors/Location'
@@ -53,6 +52,7 @@ class Map extends Component {
   }
 
   showForm = (e) => {
+    console.log('longPress')
     this.setState({ showForm: true })
   }
 
@@ -61,9 +61,10 @@ class Map extends Component {
   }
   
   render() {
+    const { showForm } = this.state
+    const { markers } = this.props
     return (
       <View style={styles.container}>
-         {this.state.showForm && <Form />}
         <MapView
           provider={ PROVIDER_GOOGLE }
           ref={ map => { this.map = map }}
@@ -79,7 +80,7 @@ class Map extends Component {
           initialRegion={initialRegion}
         >
        
-        {this.props.markers.length && this.props.markers.map((item, index) => {
+        {markers.length && markers.map((item, index) => {
           const location = {
             latitude: item.geometry.location.lat,
             longitude: item.geometry.location.lng

@@ -5,6 +5,7 @@ export const REQUEST_AUTOCOMPLETE_SEARCH_SUCCESS = 'REQUEST_AUTOCOMPLETE_SEARCH_
 export const RESET_AUTOCOMPLETE_SEARCH = 'RESET_AUTOCOMPLETE_SEARCH'
 export const REQUEST_SEARCH_DETAILS = 'REQUEST_SEARCH_DETAILS'
 export const REQUEST_SEARCH_DETAILS_SUCCESS = 'REQUEST_SEARCH_DETAILS_SUCCESS'
+export const REQUEST_SEARCH_DETAILS_RESET = 'REQUEST_SEARCH_DETAILS_RESET'
 
 export const requestSearch = (query, location) => {
   return {
@@ -60,3 +61,6 @@ export const requestSearchDetailsSuccess = (response) => {
   }
 }
 
+export const requestSearchDetailsReset = () => ({
+  type: REQUEST_SEARCH_DETAILS_RESET
+})

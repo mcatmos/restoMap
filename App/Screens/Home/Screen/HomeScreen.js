@@ -11,6 +11,7 @@ import SearchBox from '../Components/SearchBox/SearchBox'
 import { addMarker } from '../../../Domain/Actions/MarkerActions'
 import { getSearchResults } from '../../../Domain/Selectors/Search'
 import { hideResultCards } from '../../../Domain/Actions/UIActions/'
+import Modal from '../../../Components/Modal/Modal'
 
 class HomeScreen extends Component {
   handleAddMarker = (item) => {
@@ -20,17 +21,18 @@ class HomeScreen extends Component {
 
   render() {
     const { showResults, results } = this.props
-    console.log(showResults)
+    const showScrollView = showResults && results
     return (
       <View style={styles.container}>       
         <Map />
         <SearchBox />
         <View style={styles.resultsContainer}>
-          {showResults && <ScrollItems 
+          {showScrollView && <ScrollItems 
             items={results} 
             onPress={(item) => this.handleAddMarker(item)} 
           />}
         </View>
+        <Modal />
       </View>
     )
   }

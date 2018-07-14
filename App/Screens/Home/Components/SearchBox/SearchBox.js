@@ -17,7 +17,7 @@ import {
   resetAutocompleteSearch,
   requestSearchDetails 
 } from '../../../../Domain/Actions/SearchActions'
-import { showResultCards } from '../../../../Domain/Actions/UIActions'
+import { showResultCards, showModal } from '../../../../Domain/Actions/UIActions'
 import { getCurrentLocation } from '../../../../Domain/Selectors/Location'
 import { getAutocompleteResults } from '../../../../Domain/Selectors/Search'
 import PredictiveList from './PredictiveList/PredictiveList'
@@ -63,9 +63,9 @@ class SearchBox extends Component {
   }
 
   handleOnPress = (placeId) => {
-    const { requestSearchDetails } = this.props
-    //requestSearchDetails(placeId)
-    //this.props.navigation.dispatch(navigateAction)
+    const { requestSearchDetails, showModal, resetAutocompleteSearch } = this.props
+    resetAutocompleteSearch()
+    showModal(placeId)
   }
 
   render() {
@@ -140,5 +140,6 @@ export default connect(mapStateToProps, {
   requestAutocompleteSearch,
   showResultCards,
   resetAutocompleteSearch,
-  requestSearchDetails
+  requestSearchDetails,
+  showModal
 })(withNavigation(SearchBox))
