@@ -19,6 +19,7 @@ export default LoginReducer = (state = INITIAL_STATE, action) => {
     case REQUEST_LOGIN_SUCCESS: 
       return {
         user: action.payload,
+        userId: action.payload.uid,
         isFetching: false,
         loginSuccessful: true
       }

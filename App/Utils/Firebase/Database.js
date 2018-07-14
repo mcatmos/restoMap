@@ -6,17 +6,11 @@ const places = Firestore.collection('places')
 
 export const getUserObject = (userId) => {
   return users.doc(userId).get().then(doc => doc.data())
-  .catch(function(error) {
-    console.log("Error getting documents: ", error);
-  })
 }
 
 export const getUserPlaces = (placeIds) => {
   const arrayOfPromises = placeIds.map(id => {
     return places.doc(id).get().then(doc => doc.data())
-    .catch(function(error) {
-      console.log("Error getting documents: ", error);
-    })
   })
   
 
@@ -24,10 +18,15 @@ export const getUserPlaces = (placeIds) => {
 }
 
 export const setUserPlace = (data, userId) => {
-  users.doc(userId).set({ 
-    markers: {
-      [data.place_id]: data
-    }
+  Firestore.runTransaction(transaction => {
+    const docRef = users.doc(userId)
+    const keyRef = 'markers'
+    return transaction.get(docRef).then(snapshot => { 
+      const largerArray = snapshot.get(keyRef)
+      
+      largerArray.push(data.place_id)
+      transaction.update(docRef, keyRef, largerArray)
+    })
   })
 
   places.doc(data.place_id).set(data)

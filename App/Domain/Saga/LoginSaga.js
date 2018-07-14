@@ -1,5 +1,5 @@
 import { takeLatest, put, call } from 'redux-saga/effects'
-import { REQUEST_LOGIN, requestLoginSuccess, REQUEST_LOGOUT } from '../Actions/LoginActions'
+import { REQUEST_LOGIN, requestLoginSuccess, REQUEST_LOGOUT, requestLogoutSuccess } from '../Actions/LoginActions'
 import { signInAndRetrieveDataWithEmailAndPassword, logOut } from '../../Screens/Login/Utils/'
 import * as NavigationService from '../../Navigation/NavigationService'
 import { requestUserInfo } from '../Actions/UserActions';
@@ -9,8 +9,8 @@ function* requestLogin(action) {
   const { mail, password } = action.payload
   try {
     const response = yield call(signInAndRetrieveDataWithEmailAndPassword, mail, password)
-    yield put(requestLoginSuccess(response._user))
-    yield put(requestUserInfo('OTZ26J3pXIWW5YEnnL18Ordo82y2'))
+    yield put(requestLoginSuccess(response.user._user))
+    yield put(requestUserInfo(response.user._user.uid))
     NavigationService.navigate('Home')
   }
   catch (err){
@@ -21,7 +21,8 @@ function* requestLogin(action) {
 function* requestLogout() {
   try {
     yield call(logOut)
-    NavigationService.navigate('Login')
+    NavigationService.navigate('Auth')
+    yield put(requestLogoutSuccess())
   }
   catch (err) {
     console.log(err)

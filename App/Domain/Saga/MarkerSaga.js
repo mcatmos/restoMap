@@ -1,11 +1,12 @@
-import { takeLatest, put, call } from 'redux-saga/effects'
+import { takeLatest, put, call, select } from 'redux-saga/effects'
 import { setUserPlace } from '../../Utils/Firebase/Database'
 import { ADD_NEW_MARKER } from '../Actions/MarkerActions'
+import { getUserId } from '../Selectors/User'
 
 function* setMarkerPlace(action) {
-  console.log(action)
   try {
-    yield call(setUserPlace, action.payload)
+    const userId = yield select(getUserId)
+    yield call(setUserPlace, action.payload, userId)
   }
   catch (err){
     console.log(err)

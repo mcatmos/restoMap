@@ -21,8 +21,8 @@ function* requestSearch(APIService, action) {
        yield put(requestSearchSuccess(data.candidates))
        yield put(showResultCards())
      }
-  } catch (e) {
-     console.log(e)
+  } catch (err) {
+     console.log(err)
   }
 }
 
@@ -34,8 +34,8 @@ function* requestAutocompleteSearch(APIService, action) {
       yield put(requestAutocompleteSearchSuccess(data.predictions))
       //yield put(showResultCards())
     }
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -46,8 +46,8 @@ function* requestSearchDetails(APIService, action) {
       const { data } = response
       yield put(requestSearchDetailsSuccess(data.result))
     }
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    console.log(err)
   }
 }
 

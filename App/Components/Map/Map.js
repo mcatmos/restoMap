@@ -8,8 +8,8 @@ import MapStyle from './Utils/MapStyle'
 import { getCurrentLocation } from '../../Domain/Selectors/Location'
 
 const { width, height } = Dimensions.get('window')
-const LATITUDE_DELTA = 0.01;
-const LONGITUDE_DELTA = 0.01;
+const LATITUDE_DELTA = 0.03;
+const LONGITUDE_DELTA = 0.03;
 const initialRegion = {
   latitude: -37.78825,
   longitude: -122.4324,
@@ -31,12 +31,25 @@ class Map extends Component {
     const { ready } = this.state
     const { location } = this.props
     
-    const region = {
-      latitude: location.latitude,
-      longitude: location.longitude,
+    let region = {
       latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
     }
+
+    if (location) {
+      region = {
+        ...region,
+        latitude: location.latitude,
+        longitude: location.longitude
+      }
+    } else {
+      region = {
+        ...region,
+        latitude: 0,
+        longitude: 0
+      }
+    }
+    
 
     if (prevState.ready !== ready) {
       if (ready) {
@@ -52,7 +65,6 @@ class Map extends Component {
   }
 
   showForm = (e) => {
-    console.log('longPress')
     this.setState({ showForm: true })
   }
 
@@ -81,8 +93,8 @@ class Map extends Component {
         >
        
         {Object.values(markers).length && Object.values(markers).map((item, index) => {
-          const latitude = item.geometry.location.lat || item.geometry.location._latitude
-          const longitude = item.geometry.location.lng || item.geometry.location._longitude
+          const latitude = item.geometry.location.lat
+          const longitude = item.geometry.location.lng
           
           const location = {
             latitude,
