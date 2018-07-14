@@ -1,7 +1,7 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
-target 'restoMap' do
+def restoMapPods
   rn_path = '../node_modules/react-native'
   rn_maps_path = '../node_modules/react-native-maps'
 
@@ -9,6 +9,8 @@ target 'restoMap' do
   pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'Firebase/Firestore'
   pod 'React', path: rn_path, subspecs: [
     'Core',
     'CxxBridge',
@@ -39,8 +41,14 @@ target 'restoMap' do
   pod 'react-native-google-maps', path: rn_maps_path  # Remove this line if you don't want to support GoogleMaps on iOS
   pod 'GoogleMaps'  # Remove this line if you don't want to support GoogleMaps on iOS
   pod 'Google-Maps-iOS-Utils' # Remove this line if you don't want to support GoogleMaps on iOS
-  pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+end
+
+target 'restoMap' do
+  restoMapPods
+end
+target 'dev' do
+  restoMapPods
 end
 
 post_install do |installer|

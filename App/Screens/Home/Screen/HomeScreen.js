@@ -8,14 +8,14 @@ import { connect } from 'react-redux'
 import Map from '../../../Components/Map/Map'
 import ScrollItems from '../../../Components/ScrollItems/ScrollItems'
 import SearchBox from '../Components/SearchBox/SearchBox'
-import { addMarker } from '../../../Domain/Actions/MarkerActions'
+import { addNewMarker } from '../../../Domain/Actions/MarkerActions'
 import { getSearchResults } from '../../../Domain/Selectors/Search'
 import { hideResultCards } from '../../../Domain/Actions/UIActions/'
 import Modal from '../../../Components/Modal/Modal'
 
 class HomeScreen extends Component {
   handleAddMarker = (item) => {
-    this.props.addMarker(item)
+    this.props.addNewMarker(item)
     this.props.hideResultCards()
   }
 
@@ -56,6 +56,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-  addMarker,
+  addNewMarker,
   hideResultCards
 })(HomeScreen)

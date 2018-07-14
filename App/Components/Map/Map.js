@@ -80,11 +80,15 @@ class Map extends Component {
           initialRegion={initialRegion}
         >
        
-        {markers.length && markers.map((item, index) => {
+        {Object.values(markers).length && Object.values(markers).map((item, index) => {
+          const latitude = item.geometry.location.lat || item.geometry.location._latitude
+          const longitude = item.geometry.location.lng || item.geometry.location._longitude
+          
           const location = {
-            latitude: item.geometry.location.lat,
-            longitude: item.geometry.location.lng
+            latitude,
+            longitude
           }
+
           return (
             <Marker key={index} coordinate={location}>
               <Callout>

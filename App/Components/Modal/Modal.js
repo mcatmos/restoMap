@@ -9,14 +9,14 @@ import {
 import ModalComponent from "react-native-modal"
 import { hideModal } from '../../Domain/Actions/UIActions'
 import AddItemButton from '../AddItemButton/AddItemButton'
-import { addMarker } from '../../Domain/Actions/MarkerActions'
+import { addNewMarker } from '../../Domain/Actions/MarkerActions'
 import { requestSearchDetails, requestSearchDetailsReset } from '../../Domain/Actions/SearchActions'
 
 class Modal extends Component {
 
   onPress = (details) => {
-    const { addMarker, hideModal } = this.props
-    addMarker(details)
+    const { addNewMarker, hideModal } = this.props
+    addNewMarker(details)
     hideModal()
   }
 
@@ -101,5 +101,5 @@ export default connect(mapStateToProps, {
   hideModal,
   requestSearchDetails,
   requestSearchDetailsReset,
-  addMarker
+  addNewMarker
 })(Modal)
