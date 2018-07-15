@@ -6,6 +6,7 @@ import MyCustomCalloutView from './Components/CalloutView'
 import { addMarker } from '../../Domain/Actions/MarkerActions'
 import MapStyle from './Utils/MapStyle'
 import { getCurrentLocation } from '../../Domain/Selectors/Location'
+import { getFollowingMarkers } from '../../Domain/Selectors/Markers';
 
 const { width, height } = Dimensions.get('window')
 const LATITUDE_DELTA = 0.03;
@@ -74,7 +75,8 @@ class Map extends Component {
   
   render() {
     const { showForm } = this.state
-    const { markers } = this.props
+    const { markers, followingMarkers } = this.props
+
     return (
       <View style={styles.container}>
         <MapView
@@ -130,6 +132,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     markers: state.markers,
+    followingMarkers: getFollowingMarkers(state),
     location: getCurrentLocation(state)
   }
 }

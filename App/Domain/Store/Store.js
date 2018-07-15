@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { persistStore } from 'redux-persist'
+import { enableBatching } from 'redux-batched-actions'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import logger from 'redux-logger'
 import SagaRoot from '../Saga/SagaRoot'
@@ -15,7 +16,7 @@ export default (reducers) => {
   components.push(logger)
   const middleWare = composeWithDevTools(applyMiddleware(...components))
   
-  const store = createStore(reducers, middleWare)
+  const store = createStore(enableBatching(reducers), middleWare)
   const persistor = persistStore(store)
   
   sagaMiddleware.run(SagaRoot)

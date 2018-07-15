@@ -1,8 +1,13 @@
 import { takeLatest, put, call } from 'redux-saga/effects'
-import { REQUEST_LOGIN, requestLoginSuccess, REQUEST_LOGOUT, requestLogoutSuccess } from '../Actions/LoginActions'
+import { 
+  REQUEST_LOGIN, 
+  requestLoginSuccess, 
+  REQUEST_LOGOUT, 
+  requestLogoutSuccess
+} from '../Actions/LoginActions'
 import { signInAndRetrieveDataWithEmailAndPassword, logOut } from '../../Screens/Login/Utils/'
 import * as NavigationService from '../../Navigation/NavigationService'
-import { requestUserInfo } from '../Actions/UserActions';
+import { requestUserInfo, requestUserFollowers } from '../Actions/UserActions';
 
 
 function* requestLogin(action) {

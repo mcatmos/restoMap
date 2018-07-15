@@ -9,13 +9,6 @@ export const addMarker = (data) => {
   }
 }
 
-export const addMarkers = (data) => {
-  return {
-    type: ADD_MARKER,
-    payload: data
-  }
-}
-
 export const addNewMarker = (data) => {
   return {
     type: ADD_NEW_MARKER,

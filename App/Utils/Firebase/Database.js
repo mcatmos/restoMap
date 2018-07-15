@@ -12,20 +12,29 @@ export const getUserPlaces = (placeIds) => {
   const arrayOfPromises = placeIds.map(id => {
     return places.doc(id).get().then(doc => doc.data())
   })
-  
+  return Promise.all(arrayOfPromises)
+}
 
+export const getUserFollow = (userIds) => {
+  const arrayOfPromises = userIds.map(id => {
+    return users.doc(id).get().then(doc => doc.data())
+  })
   return Promise.all(arrayOfPromises)
 }
 
 export const setUserPlace = (data, userId) => {
+  const docRef = users.doc(userId)
+  const keyRef = 'markers'
+
   Firestore.runTransaction(transaction => {
-    const docRef = users.doc(userId)
-    const keyRef = 'markers'
     return transaction.get(docRef).then(snapshot => { 
-      const largerArray = snapshot.get(keyRef)
-      
-      largerArray.push(data.place_id)
-      transaction.update(docRef, keyRef, largerArray)
+      if (snapshot.get(keyRef)) {
+        const largerArray = snapshot.get(keyRef)
+        largerArray.push(data.place_id)
+        transaction.update(docRef, keyRef, largerArray)
+      } else {
+        transaction.set({ [keyRef]: [ data.place_id ]})
+      }
     })
   })
 

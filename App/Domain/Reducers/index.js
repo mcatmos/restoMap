@@ -6,6 +6,7 @@ import LocationReducer from './LocationReducer'
 import LoginReducer from './LoginReducer'
 import { AsyncStorage } from 'react-native'
 import { REQUEST_LOGOUT_SUCCESS } from '../Actions/LoginActions'
+import UsersReducer from './UsersReducer'
 
  const appReducer = persistCombineReducers(
   {
@@ -19,7 +20,8 @@ import { REQUEST_LOGOUT_SUCCESS } from '../Actions/LoginActions'
     ui: UIReducer,
     search: SearchReducer,
     location: LocationReducer,
-    login: LoginReducer
+    login: LoginReducer,
+    users: UsersReducer
   }
 )
 
