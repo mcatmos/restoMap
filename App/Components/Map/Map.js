@@ -28,6 +28,14 @@ class Map extends Component {
 
   map = null
 
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { ready } = this.state
     const { location } = this.props
@@ -72,6 +80,17 @@ class Map extends Component {
   hideForm = () => {
     this.setState({ showForm: false })
   }
+
+  handleMarkerOnpress = (e) => {
+    const coords = {
+      ...e.nativeEvent.coordinate,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    }
+
+    console.log(coords)
+    this.map.animateToRegion(coords)
+  }
   
   render() {
     const { showForm } = this.state
@@ -104,7 +123,11 @@ class Map extends Component {
           }
 
           return (
-            <Marker key={index} coordinate={location}>
+            <Marker 
+              key={index} 
+              coordinate={location} 
+              onPress={this.handleMarkerOnpress}
+            >
               <Callout>
                 <MyCustomCalloutView />
               </Callout>
@@ -120,12 +143,11 @@ class Map extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
     flex: 1
   },
   map: {
     width,
-    height
+    height: height*0.55
   }
 })
 

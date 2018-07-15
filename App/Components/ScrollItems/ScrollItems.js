@@ -1,45 +1,51 @@
 import React, { Component } from 'react'
 import {
-  ScrollView,
   View,
   Text,
   StyleSheet,
-  Animated
+  Dimensions
 } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
 import Card from '../Card/Card'
+const { width } = Dimensions.get('window')
 
 class ScrollItems extends Component {
-  constructor(props) {
-    super(props)
 
-    this.state = {
-      animatedValue: new Animated.Value(0)
-    }
-  }
-
-  componentDidUpdate() {
-    Animated.timing(this.state.animatedValue, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true
-    }).start();
-  }
-  
-  render() {
-    const { items, onPress } = this.props
+  renderRow = (item) => {
     return (
-      <Animated.ScrollView 
-        horizontal 
-        style={{ opacity: this.state.animatedValue }}
-      >
-        {items.map((item, index) => {
-          return (
-            <Card key={index} {...item} onPress={onPress} />
-          )
-        })}
-      </Animated.ScrollView>
+      <View style={{ backgroundColor: 'white', padding: 10, margin: 10 }}>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text>{item.website}</Text>
+        <Text>{item.formatted_address}</Text>
+        <Text style={styles.title}>{item.rating}</Text>
+      </View>
+    )
+  }
+
+  render() {
+    const { items, onPress, isFetching, animateToRegion } = this.props
+    return (
+      <Carousel
+        ref={(c) => { this._carousel = c; }}
+        data={items}
+        renderItem={({ item }) => this.renderRow(item)}
+        sliderWidth={width}
+        itemWidth={width - 100}
+        firstItem={1}
+        loop
+        onBeforeSnapToItem={(index) => animateToRegion(items[index].geometry.location)}
+      />
     )
   }
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    paddingBottom: 10
+  }
+})
 
 export default ScrollItems

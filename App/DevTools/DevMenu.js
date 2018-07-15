@@ -9,7 +9,7 @@ class DevMenu extends Component {
     const { dispatch } = this.props
     
     return (
-      <View>
+      <View style={{position: 'absolute'}}>
         {config(dispatch).map(item => {
           return (
             <TouchableOpacity key={item.label} onPress={item.onPress}>

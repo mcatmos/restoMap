@@ -10,6 +10,7 @@ import ScrollItems from '../../../Components/ScrollItems/ScrollItems'
 import SearchBox from '../Components/SearchBox/SearchBox'
 import { addNewMarker } from '../../../Domain/Actions/MarkerActions'
 import { getSearchResults } from '../../../Domain/Selectors/Search'
+import { getUserMarkers } from '../../../Domain/Selectors/Markers'
 import { hideResultCards } from '../../../Domain/Actions/UIActions/'
 import Modal from '../../../Components/Modal/Modal'
 
@@ -19,18 +20,27 @@ class HomeScreen extends Component {
     this.props.hideResultCards()
   }
 
+  handleAnimateToRegion = (coords) => {
+    const location = {
+      longitude: coords.lng,
+      latitude: coords.lat,
+      latitudeDelta: 0.025,
+      longitudeDelta: 0.025
+    }
+
+    this.map.map.animateToRegion(location)
+  }
+
   render() {
-    const { showResults, results } = this.props
+    const { showResults, results, markers } = this.props
     const showScrollView = showResults && results
+
     return (
-      <View style={styles.container}>       
-        <Map />
+      <View style={styles.container}> 
         <SearchBox />
-        <View style={styles.resultsContainer}>
-          {showScrollView && <ScrollItems 
-            items={results} 
-            onPress={(item) => this.handleAddMarker(item)} 
-          />}
+        <Map onRef={ref => (this.map = ref)}/>
+        <View style={{flex: 0.6}}>
+          <ScrollItems items={markers} animateToRegion={this.handleAnimateToRegion}/>
         </View>
         <Modal />
       </View>
@@ -41,7 +51,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   resultsContainer: {
     justifyContent: 'flex-end'
@@ -51,7 +61,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     showResults: state.ui.showResultCards,
-    results: getSearchResults(state)
+    results: getSearchResults(state),
+    markers: getUserMarkers(state)
   }
 }
 

@@ -106,14 +106,16 @@ const mapStateToProps = (state) => {
 }
 
 const styles = StyleSheet.create({
+  fullContainer: {
+    borderBottomWidth: 3,
+    borderBottomColor: 'black'
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderBottomWidth: 3,
-    borderBottomColor: 'black',
     paddingTop: 20
   },
   searchContainer: {
