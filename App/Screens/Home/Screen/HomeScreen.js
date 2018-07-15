@@ -39,7 +39,7 @@ class HomeScreen extends Component {
       <View style={styles.container}> 
         <SearchBox />
         <Map onRef={ref => (this.map = ref)}/>
-        <View style={{flex: 0.6}}>
+        <View style={styles.scrollContainer}>
           <ScrollItems items={markers} animateToRegion={this.handleAnimateToRegion}/>
         </View>
         <Modal />
@@ -51,9 +51,9 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around'
+    justifyContent: 'space-between'
   },
-  resultsContainer: {
+  scrollContainer: {
     justifyContent: 'flex-end'
   }
 })

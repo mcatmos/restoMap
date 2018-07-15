@@ -9,8 +9,9 @@ import { getCurrentLocation } from '../../Domain/Selectors/Location'
 import { getFollowingMarkers } from '../../Domain/Selectors/Markers';
 
 const { width, height } = Dimensions.get('window')
-const LATITUDE_DELTA = 0.03;
-const LONGITUDE_DELTA = 0.03;
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.03
+const LONGITUDE_DELTA = 0.03
 const initialRegion = {
   latitude: -37.78825,
   longitude: -122.4324,
@@ -102,6 +103,7 @@ class Map extends Component {
           provider={ PROVIDER_GOOGLE }
           ref={ map => { this.map = map }}
           style={styles.map}
+          loadingEnabled
           onMapReady={this.onMapReady}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width,
-    height: height*0.55
+    height: height - 80
   }
 })
 

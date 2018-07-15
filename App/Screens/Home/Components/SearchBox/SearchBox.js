@@ -53,7 +53,7 @@ class SearchBox extends Component {
     const { query } = this.state
     this.setState({ query: text })
 
-    if (query.length > 4) {
+    if (query.length > 3) {
       requestAutocompleteSearch(query, location)
     }
 
